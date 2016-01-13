@@ -150,7 +150,7 @@ class tncc(object):
         #self.br.set_debug_redirects(True)
         #self.br.set_debug_responses(True)
 
-        self.user_agent = 'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.1) Gecko/2008071615 Fedora/3.0.1-1.fc9 Firefox/3.0.1'
+        self.user_agent = 'Opera/9.80 (X11; Linux i686) Presto/2.12.388 Version/12,16'
         self.br.addheaders = [('User-agent', self.user_agent)]
 
     def find_cookie(self, name):
