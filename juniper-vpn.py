@@ -105,7 +105,11 @@ class juniper_vpn(object):
 
         for form in self.br.forms():
             if form.name == 'frmLogin':
-                return 'login'
+                try:
+                    form.find_control('sn-preauth-proceed') # Throws if not found
+                    return 'preauth'
+                except mechanize.ControlNotFoundError:
+                    return 'login'
             elif form.name == 'frmDefender':
                 return 'key'
             elif form.name == 'frmConfirmation':
@@ -123,6 +127,8 @@ class juniper_vpn(object):
                 self.action_tncc()
             elif action == 'login':
                 self.action_login()
+            elif action == 'preauth':
+                self.action_preauth()
             elif action == 'key':
                 self.action_key()
             elif action == 'continue':
@@ -143,6 +149,10 @@ class juniper_vpn(object):
         self.cj.set_cookie(t.get_cookie(dspreauth_cookie, dssignin_cookie))
 
         self.r = self.br.open(self.r.geturl())
+
+    def action_preauth(self):
+        self.br.select_form(nr=0)
+        self.br.submit()
 
     def action_login(self):
         # The token used for two-factor is selected when this form is submitted.
@@ -284,4 +294,3 @@ if __name__ == "__main__":
     atexit.register(cleanup)
     jvpn = juniper_vpn(args)
     jvpn.run()
-
